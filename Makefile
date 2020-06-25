@@ -11,7 +11,10 @@ build:
 	-lSDL2_mixer;
 
 clear:
-	rm ./build/*;
+	rm -r ./build;
 
 run:
 	./build/game;
+
+restart:
+	make clear; make; make run;
