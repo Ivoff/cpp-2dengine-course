@@ -1,4 +1,5 @@
 #include <iostream>
+#include "./constants.h"
 #include "./game.h"
 
 Game::Game() {
@@ -65,12 +66,19 @@ void Game::process_input() {
 
 float projectile_pos_x = 0.0f;
 float projectile_pos_y = 0.0f;
-float projectile_vel_x = 0.05f;
-float projectile_vel_y = 0.05f;
+float projectile_vel_x = 10.0f;
+float projectile_vel_y = 10.0f;
 
 void Game::update() {
-	projectile_pos_x += projectile_vel_x;
-	projectile_pos_y += projectile_vel_y;
+	while(!SDL_TICKS_PASSED(SDL_GetTicks(), this->last_frame_ticks + MIN_FPS_TIME));
+
+	float delta_time = (SDL_GetTicks() - this->last_frame_ticks) / 1000.0f;
+	delta_time = delta_time > 0.05f ? 0.05f : delta_time;
+
+	this->last_frame_ticks = SDL_GetTicks();
+
+	projectile_pos_x += projectile_vel_x * delta_time;
+	projectile_pos_y += projectile_vel_y * delta_time;
 }
 
 void Game::render() {	

@@ -1,6 +1,6 @@
 #include <iostream>
-#include "./game.h"
 #include "./constants.h"
+#include "./game.h"
 
 int main() {
 	Game *game = new Game();

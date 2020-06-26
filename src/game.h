@@ -5,13 +5,13 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-
 class Game {
 private:
 	bool 			running;
 	SDL_Window* 	window;
 	SDL_Renderer* 	renderer;
-	
+	unsigned int 	last_frame_ticks;
+
 public:
 	Game();
 	~Game();
@@ -23,4 +23,5 @@ public:
 	void render();
 	void destroy();
 };
+
 #endif
