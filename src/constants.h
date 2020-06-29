@@ -5,7 +5,7 @@ const unsigned int WINDOW_WIDTH = 800;
 const unsigned int WINDOW_HEIGHT = 600;
 
 /* Quantidade maxima de frames gerados pelo jogo */
-const unsigned int MAX_FPS = 120;
+const unsigned int MAX_FPS = 15;
 
 /* Valor do tempo minimo que um fps deve levar para ser renderizado na tela 
  * 1000 e a quantidade de milisegundos em um segundo, dividido por MAX_FPS

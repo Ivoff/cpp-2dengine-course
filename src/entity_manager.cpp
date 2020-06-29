@@ -32,5 +32,3 @@ std::vector<Entity*> EntityManager::get_entities() {
 unsigned int EntityManager::length() {
 	return this->entities.size();
 }
-
-

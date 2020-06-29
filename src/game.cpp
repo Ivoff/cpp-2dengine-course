@@ -2,6 +2,7 @@
 #include "./constants.h"
 #include "./game.h"
 #include "./components/transform_component.h"
+#include "./components/grid_component.h"
 #include "../lib/glm/glm.hpp"
 #include "./entity_manager.h"
 
@@ -52,20 +53,8 @@ void Game::initialize(unsigned int width, unsigned int height) {
 }
 
 void Game::load_level(int levelNumber) {
-    Entity& entity(entity_manager.add_entity("projectile"));
-    entity.add_component<TransformComponent>(0, 0, 500, 500, 32, 32, 1);
-
-    Entity& entity1(entity_manager.add_entity("projectile"));
-    entity1.add_component<TransformComponent>(100, 50, 500, 500, 32, 32, 1);
-
-    Entity& entity2(entity_manager.add_entity("projectile"));
-    entity2.add_component<TransformComponent>(600, 100, 500, 500, 32, 32, 1);
-
-    Entity& entity3(entity_manager.add_entity("projectile"));
-    entity3.add_component<TransformComponent>(123, 321, 500, 500, 32, 32, 1);
-
-    Entity& entity4(entity_manager.add_entity("projectile"));
-    entity4.add_component<TransformComponent>(0, 500, 500, 500, 32, 32, 1);
+    Entity& entity(entity_manager.add_entity("grid"));
+	entity.add_component<GridComponent>();	
 }
 
 void Game::process_input() {
