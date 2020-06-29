@@ -1,7 +1,12 @@
 #include <iostream>
 #include "./constants.h"
 #include "./game.h"
+#include "./components/transform_component.h"
 #include "../lib/glm/glm.hpp"
+#include "./entity_manager.h"
+
+EntityManager entity_manager;
+SDL_Renderer* Game::renderer;
 
 Game::Game() {
     this->running = false;
@@ -35,14 +40,32 @@ void Game::initialize(unsigned int width, unsigned int height) {
         return;
     }
 
-    this->renderer = SDL_CreateRenderer(this->window, -1, NULL);
-    if ( !this->renderer ) {
+	Game::renderer = SDL_CreateRenderer(this->window, -1, NULL);
+    if ( !Game::renderer ) {
         std::cerr << "Something went wrong initializing" << std::endl;
         return;
     }
-
+		
+	this->load_level(0);
 	this->running = true;
 	return;
+}
+
+void Game::load_level(int levelNumber) {
+    Entity& entity(entity_manager.add_entity("projectile"));
+    entity.add_component<TransformComponent>(0, 0, 500, 500, 32, 32, 1);
+
+    Entity& entity1(entity_manager.add_entity("projectile"));
+    entity1.add_component<TransformComponent>(100, 50, 500, 500, 32, 32, 1);
+
+    Entity& entity2(entity_manager.add_entity("projectile"));
+    entity2.add_component<TransformComponent>(600, 100, 500, 500, 32, 32, 1);
+
+    Entity& entity3(entity_manager.add_entity("projectile"));
+    entity3.add_component<TransformComponent>(123, 321, 500, 500, 32, 32, 1);
+
+    Entity& entity4(entity_manager.add_entity("projectile"));
+    entity4.add_component<TransformComponent>(0, 500, 500, 500, 32, 32, 1);
 }
 
 void Game::process_input() {
@@ -65,10 +88,6 @@ void Game::process_input() {
 	}
 }
 
-
-glm::vec2 projectile_pos = glm::vec2(0.0f, 0.0f);
-glm::vec2 projectile_vel = glm::vec2(25.0f, 25.0f);
-
 void Game::update() {
 	
 	unsigned int available_miliseconds = MIN_FPS_TIME - (SDL_GetTicks() - this->last_frame_ticks);
@@ -81,31 +100,23 @@ void Game::update() {
 
 	this->last_frame_ticks = SDL_GetTicks();
 
-	projectile_pos = glm::vec2(
-		projectile_pos.x + projectile_vel.x * delta_time,
-		projectile_pos.y + projectile_vel.y * delta_time
-	);
-	std::cout << projectile_pos.x << ", " << projectile_pos.y << std::endl;
+	entity_manager.update(delta_time);
 }
 
 void Game::render() {	
-	SDL_SetRenderDrawColor(this->renderer, 80, 80, 80, 255);
-	SDL_RenderClear(this->renderer);
+	SDL_SetRenderDrawColor(Game::renderer, 30, 30, 30, 255);
+	SDL_RenderClear(Game::renderer);
 
-	SDL_Rect projectile {
-		(int)projectile_pos.x, 
-		(int)projectile_pos.y, 
-		10, 
-		10			
-	};
+	if(!entity_manager.has_entities()){		
+		return;
+	}
+	entity_manager.render();
 
-	SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
-	SDL_RenderFillRect(this->renderer, &projectile);
-	SDL_RenderPresent(this->renderer);
+	SDL_RenderPresent(Game::renderer);
 }
 
 void Game::destroy(){
-	SDL_DestroyRenderer(this->renderer);
+	SDL_DestroyRenderer(Game::renderer);
 	SDL_DestroyWindow(this->window);
 	SDL_Quit();
 }
